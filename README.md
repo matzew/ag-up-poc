@@ -13,7 +13,7 @@ curl -v -H "Accept: application/json"  \
   -d '{"description":"just a test", "name":"TestApp"}'\
   http://localhost:8080/applications
 ```
-__The response returns an PUSH-APP-ID....__
+_The response returns an PUSH-APP-ID...._
 
 Add an ```iOS``` Mobile Application:
 ```
@@ -23,7 +23,7 @@ curl -v -H "Accept: application/json"  \
   -d '{"certificate":"/Users/matzew/Desktop/PUSHER.p12", "passphrase":"foo"}'  \
   http://localhost:8080/applications/{PushAppID}/iOS
 ```
-__The response returns an MOBILE-APP-ID....__
+_The response returns an MOBILE-APP-ID...._
 
 **Note**: Use a path - upload not yet supported..................
 
@@ -35,7 +35,7 @@ curl -v -H "Accept: application/json"  \
   -d '{"google-api-key" : "MY GOOGLE ID"}'  \
   http://localhost:8080/applications/{PushAppID}/android
 ```
-__The response returns an MOBILE-APP-ID....__
+_The response returns an MOBILE-APP-ID...._
 
 #### Registration of an installation, on a device (iOS)
 
@@ -73,7 +73,7 @@ Client-side example for how to register an installation:
     }];
 }
 ```
-__No real client SDK, YET!!!!__
+_No real client SDK, YET!!!!_
 
 
 #### Sender
