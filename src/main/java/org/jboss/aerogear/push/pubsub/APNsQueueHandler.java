@@ -25,8 +25,8 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
-import com.notnoop.apns.APNS;
-import com.notnoop.apns.ApnsService;
+//import com.notnoop.apns.APNS;
+//import com.notnoop.apns.ApnsService;
 
 /**
  * Queue that receives messages for different apps/iOS views and 
@@ -34,10 +34,11 @@ import com.notnoop.apns.ApnsService;
  */
 public final class APNsQueueHandler implements
         Handler<Message<JsonObject>> {
-    private ApnsService service = null;
+//    private ApnsService service = null;
 
     @Override
     public void handle(Message<JsonObject> event) {
+		/**
         JsonObject payload     = event.body.getObject("payload");
         JsonArray applications = event.body.getArray("applications");
 
@@ -70,5 +71,6 @@ public final class APNsQueueHandler implements
                   .build();
           service.push(iOStokenz, msg);
         }
+	  **/
     }
 }

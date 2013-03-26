@@ -26,17 +26,18 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
-import com.google.android.gcm.server.Sender;
+//import com.google.android.gcm.server.Sender;
 
 /**
  * Queue that receives messages for different apps/Android views and 
  * submits them to the Google Push Network...
  */
 public final class GCMQueueHandler implements Handler<Message<JsonObject>> {
-    private Sender sender = null;
+//    private Sender sender = null;
 
     @Override
     public void handle(Message<JsonObject> event) {
+		/**
         JsonObject payload    = event.body.getObject("payload");
         JsonArray applications = event.body.getArray("applications");
 
@@ -72,5 +73,6 @@ public final class GCMQueueHandler implements Handler<Message<JsonObject>> {
               e.printStackTrace();
           }
         }
+		**/
     }
 }
