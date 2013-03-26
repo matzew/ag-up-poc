@@ -50,10 +50,12 @@ public final class GlobalSenderQueueHandler implements
         
         JsonObject apns = new JsonObject();
         apns.putObject("payload", payload);
-        apns.putArray("applications",iOSapps);
+        if (iOSapps != null) {
+            apns.putArray("applications",iOSapps);
 
-        // hand off to apple batch processor..
-        eb.send("aerogear.push.messages.ios", apns);
+            // hand off to apple batch processor..
+            eb.send("aerogear.push.messages.ios", apns);
+        }
 
         /*
          *  2) GCM ..... dispatch 
@@ -61,9 +63,11 @@ public final class GlobalSenderQueueHandler implements
         
         JsonObject gcm = new JsonObject();
         gcm.putObject("payload", payload);
-        gcm.putArray("applications",androidApps);
+        if (androidApps != null) {
+            gcm.putArray("applications",androidApps);
 
-        eb.send("aerogear.push.messages.android", gcm);
+            eb.send("aerogear.push.messages.android", gcm);
+        }
 
         /*
          * 3) Web based push.... 

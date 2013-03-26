@@ -23,6 +23,7 @@ import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.http.HttpServerRequest;
+import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 /**
@@ -79,8 +80,16 @@ public final class BroadcastPushMessageHandler implements Handler<HttpServerRequ
                 container.putObject("payload", pushMessage);
 
                 // query and add all relevant apps... sure... it could be done in a cooler fashion...
-                container.putArray("iOS", pushAppWithMobileApps.getArray("iOS"));
-                container.putArray("android", pushAppWithMobileApps.getArray("android"));
+                
+                JsonArray iOSapps =  pushAppWithMobileApps.getArray("iOS");
+                JsonArray androidz =  pushAppWithMobileApps.getArray("android");
+                
+                // TODO... these null checks are a bit odd:
+                if (iOSapps != null)
+                    container.putArray("iOS",iOSapps);
+                
+                if  (androidz != null)
+                container.putArray("android", androidz);
 
                 // The container object is submitted to a 'global' queue, which takes care
                 // of handing the message over to other queues (for the relevant push networks)
