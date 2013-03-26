@@ -64,5 +64,19 @@ public final class GlobalSenderQueueHandler implements
         gcm.putArray("applications",androidApps);
 
         eb.send("aerogear.push.messages.android", gcm);
+
+        /*
+         * 3) Web based push.... 
+         */
+
+        JsonObject webMessage = new JsonObject();
+        webMessage.putString("text", payload.getString("alert"));
+        eb.send("org.aerogear.messaging", webMessage, new Handler<Message<JsonObject>>() {
+            @Override
+            public void handle(Message<JsonObject> event) {
+                //System.out.println(event);
+            }
+        }); 
+
     }
 }

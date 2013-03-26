@@ -26,9 +26,13 @@ import org.jboss.aerogear.push.pubsub.APNsQueueHandler;
 import org.jboss.aerogear.push.pubsub.GCMQueueHandler;
 import org.jboss.aerogear.push.pubsub.GlobalSenderQueueHandler;
 import org.vertx.java.core.eventbus.EventBus;
+import org.vertx.java.core.Handler;
 import org.vertx.java.core.http.HttpServer;
+import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.http.RouteMatcher;
+import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
+import org.vertx.java.core.sockjs.SockJSServer;
 import org.vertx.java.deploy.Verticle;
 
 /**
@@ -44,6 +48,7 @@ public class Server extends Verticle{
         // create the http server
         HttpServer server = vertx.createHttpServer();
 
+        
         // get EventBus...
         final EventBus eb = vertx.eventBus(); 
         
@@ -80,17 +85,44 @@ public class Server extends Verticle{
         rm.post("/sender/broadcast/:pushAppId", new BroadcastPushMessageHandler(eb));
 
 
+
+        // ================= POOR MAN's WebServer    =================  
+        // static files:
+        rm.getWithRegEx(".*", new Handler<HttpServerRequest>() {
+            public void handle(final HttpServerRequest req) {
+                if (req.uri.matches("/")) {
+                    // MEH!!!
+                    req.response.sendFile("src/main/webapp/index.html");
+                } else {
+                    // MEH !!!
+                    req.response.sendFile("src/main/webapp/" + req.path);
+                }
+            }
+        });
+
+
         // deploy the modules:
-        JsonObject config = new JsonObject();
-        config.putString("db_name", "unified-push2");
+        JsonObject mongoConfig = new JsonObject();
+        mongoConfig.putString("db_name", "unified-push2");
 
         // Not needed... but somewhere we need to store... for fun... mongo db....
-        container.deployModule("vertx.mongo-persistor-v1.2", config, 1);
+        container.deployModule("vertx.mongo-persistor-v1.2", mongoConfig, 1);
 
 
         // add/deploy REST enpoints
         server.requestHandler(rm);
+        
 
+        // Bridge config..:
+        JsonArray outboundPermitted = new JsonArray();
+        // Let through any messages coming from address 'org.aerogear.messaging' (mobile web push)
+        JsonObject outboundPermitted1 = new JsonObject().putString("address", "org.aerogear.messaging");
+        outboundPermitted.add(outboundPermitted1);
+
+        // sock JS - NEEDS to be added AFTER the 'requestHandler' 
+        JsonObject config = new JsonObject().putString("prefix", "/eventbus");
+        SockJSServer sockJSServer = vertx.createSockJSServer(server);
+        sockJSServer.bridge(config, new JsonArray(), outboundPermitted);
 
         // fire up the server
         server.listen(8080);
