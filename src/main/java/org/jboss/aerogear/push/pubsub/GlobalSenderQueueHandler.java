@@ -54,7 +54,7 @@ public final class GlobalSenderQueueHandler implements
             apns.putArray("applications",iOSapps);
 
             // hand off to apple batch processor..
-            eb.send("aerogear.push.messages.ios", apns);
+            eb.publish("aerogear.push.messages.ios", apns);
         }
 
         /*
@@ -66,7 +66,7 @@ public final class GlobalSenderQueueHandler implements
         if (androidApps != null) {
             gcm.putArray("applications",androidApps);
 
-            eb.send("aerogear.push.messages.android", gcm);
+            eb.publish("aerogear.push.messages.android", gcm);
         }
 
         /*
@@ -75,12 +75,7 @@ public final class GlobalSenderQueueHandler implements
 
         JsonObject webMessage = new JsonObject();
         webMessage.putString("text", payload.getString("alert"));
-        eb.send("org.aerogear.messaging", webMessage, new Handler<Message<JsonObject>>() {
-            @Override
-            public void handle(Message<JsonObject> event) {
-                //System.out.println(event);
-            }
-        }); 
+        eb.publish("org.aerogear.messaging", webMessage); 
 
     }
 }

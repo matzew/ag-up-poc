@@ -94,7 +94,7 @@ public final class BroadcastPushMessageHandler implements Handler<HttpServerRequ
                 // The container object is submitted to a 'global' queue, which takes care
                 // of handing the message over to other queues (for the relevant push networks)
                 // See GlobalSenderQueueHandler.java
-                eb.send("aerogear.push.messages", container);
+                eb.send("aerogear.push.messages", container); // send == one handler... (OK, here)
                 request.response.end("Submitted for delivery"); // best response, ever!
             }
         });
