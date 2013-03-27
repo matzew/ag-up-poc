@@ -75,12 +75,8 @@ public final class GlobalSenderQueueHandler implements
 
         JsonObject webMessage = new JsonObject();
         webMessage.putString("text", payload.getString("alert"));
-        eb.send("org.aerogear.messaging", webMessage, new Handler<Message<JsonObject>>() {
-            @Override
-            public void handle(Message<JsonObject> event) {
-                //System.out.println(event);
-            }
-        }); 
+		System.out.println("DA: " + payload.getString("alert"));
+        eb.publish("org.aerogear.messaging", webMessage); 
 
     }
 }
