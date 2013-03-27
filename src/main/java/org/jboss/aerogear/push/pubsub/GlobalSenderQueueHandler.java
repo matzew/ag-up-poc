@@ -43,6 +43,7 @@ public final class GlobalSenderQueueHandler implements
         JsonObject payload = messageContainer.getObject("payload");
         JsonArray iOSapps = messageContainer.getArray("iOS");
         JsonArray androidApps = messageContainer.getArray("android");
+        JsonArray webApps = messageContainer.getArray("web");
 
         /*
          *  1) APNs ..... dispatch 
@@ -73,9 +74,11 @@ public final class GlobalSenderQueueHandler implements
          * 3) Web based push.... 
          */
 
-        JsonObject webMessage = new JsonObject();
-        webMessage.putString("text", payload.getString("alert"));
-        eb.publish("org.aerogear.messaging", webMessage); 
-
+        JsonObject web = new JsonObject();
+        web.putObject("payload", payload);
+        if (webApps != null) {
+            web.putArray("applications",webApps);
+            eb.publish("aerogear.push.messages.web", web);
+        }
     }
 }

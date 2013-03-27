@@ -81,15 +81,17 @@ public final class BroadcastPushMessageHandler implements Handler<HttpServerRequ
 
                 // query and add all relevant apps... sure... it could be done in a cooler fashion...
                 
-                JsonArray iOSapps =  pushAppWithMobileApps.getArray("iOS");
+                JsonArray iOSappz =  pushAppWithMobileApps.getArray("iOS");
                 JsonArray androidz =  pushAppWithMobileApps.getArray("android");
+                JsonArray webAppz =  pushAppWithMobileApps.getArray("web");
                 
                 // TODO... these null checks are a bit odd:
-                if (iOSapps != null)
-                    container.putArray("iOS",iOSapps);
-                
+                if (iOSappz != null)
+                    container.putArray("iOS",iOSappz);
                 if  (androidz != null)
                 container.putArray("android", androidz);
+                if  (webAppz != null)
+                container.putArray("web", webAppz);
 
                 // The container object is submitted to a 'global' queue, which takes care
                 // of handing the message over to other queues (for the relevant push networks)

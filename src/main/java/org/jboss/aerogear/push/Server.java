@@ -25,6 +25,7 @@ import org.jboss.aerogear.push.handler.sender.BroadcastPushMessageHandler;
 import org.jboss.aerogear.push.pubsub.APNsQueueHandler;
 import org.jboss.aerogear.push.pubsub.GCMQueueHandler;
 import org.jboss.aerogear.push.pubsub.GlobalSenderQueueHandler;
+import org.jboss.aerogear.push.pubsub.WebMessagingQueueHandler;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.http.HttpServer;
@@ -59,6 +60,7 @@ public class Server extends Verticle{
         eb.registerHandler("aerogear.push.messages", new GlobalSenderQueueHandler(eb));
         eb.registerHandler("aerogear.push.messages.ios", new APNsQueueHandler());
         eb.registerHandler("aerogear.push.messages.android", new GCMQueueHandler());
+        eb.registerHandler("aerogear.push.messages.web", new WebMessagingQueueHandler(eb));
 
 
         // REST API Endpoints....
@@ -116,12 +118,13 @@ public class Server extends Verticle{
         // Bridge config..:
         JsonArray outboundPermitted = new JsonArray();
         // Let through any messages coming from address 'org.aerogear.messaging' (mobile web push)
-        JsonObject outboundPermitted1 = new JsonObject().putString("address", "org.aerogear.messaging");
+        JsonObject outboundPermitted1 = new JsonObject();//.putString("address", "org.aerogear.messaging");
         outboundPermitted.add(outboundPermitted1);
 
         // sock JS - NEEDS to be added AFTER the 'requestHandler' 
         JsonObject config = new JsonObject().putString("prefix", "/eventbus");
         SockJSServer sockJSServer = vertx.createSockJSServer(server);
+        
         sockJSServer.bridge(config, new JsonArray(), outboundPermitted);
 
         // fire up the server

@@ -49,6 +49,13 @@ public final class MobileApplicationRegistrationHandler implements
         // TDOD check for 'allowed' variant...
         final String variant = request.params().get("variant");
 
+        // end here - if unsupported request occurs 
+        if (! notAllowedVariant(variant)) {
+            request.response.statusCode = 500;
+            request.response.end("Not allowed");
+            return;
+        }
+
         request.dataHandler(new Handler<Buffer>() {
             public void handle(Buffer buffer) {
                 
@@ -103,5 +110,14 @@ public final class MobileApplicationRegistrationHandler implements
                 request.response.end(resp.encode());
             }
         });
+    }
+
+    private boolean notAllowedVariant(String variant) {
+        if ("web".equals(variant) || "iOS".equals(variant) || "android".equals(variant)  ) {
+            return true;
+        }
+        
+        // nope
+        return false;
     }
 }
