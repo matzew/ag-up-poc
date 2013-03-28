@@ -26,14 +26,18 @@ import org.jboss.aerogear.push.pubsub.APNsQueueHandler;
 import org.jboss.aerogear.push.pubsub.GCMQueueHandler;
 import org.jboss.aerogear.push.pubsub.GlobalSenderQueueHandler;
 import org.jboss.aerogear.push.pubsub.WebMessagingQueueHandler;
+import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.eventbus.EventBus;
+import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.http.HttpServerRequest;
 import org.vertx.java.core.http.RouteMatcher;
+import org.vertx.java.core.http.ServerWebSocket;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.sockjs.SockJSServer;
+import org.vertx.java.core.sockjs.SockJSSocket;
 import org.vertx.java.deploy.Verticle;
 
 /**
@@ -48,7 +52,6 @@ public class Server extends Verticle{
         
         // create the http server
         HttpServer server = vertx.createHttpServer();
-
         
         // get EventBus...
         final EventBus eb = vertx.eventBus(); 
@@ -124,6 +127,31 @@ public class Server extends Verticle{
         // sock JS - NEEDS to be added AFTER the 'requestHandler' 
         JsonObject config = new JsonObject().putString("prefix", "/eventbus");
         SockJSServer sockJSServer = vertx.createSockJSServer(server);
+        
+        
+//        sockJSServer.installApp(config, new Handler<SockJSSocket>() {
+//            @Override
+//            public void handle(final SockJSSocket event) {
+//                System.out.println("Connect....... " + event);                
+//                
+//                event.dataHandler(new Handler<Buffer>() {
+//                    
+//                    @Override
+//                    public void handle(Buffer event) {
+//                        System.out.println("handle(buffer)  "   + event.toString());
+//                    }
+//                });
+//                
+//                eb.registerHandler("com.news.feed", new Handler<Message<JsonObject>>() {
+//                    @Override
+//                    public void handle(Message<JsonObject> event) {
+//                        System.out.println("EB mess");
+//                    }
+//                    
+//                });
+//                
+//            }
+//        });
         
         sockJSServer.bridge(config, new JsonArray(), outboundPermitted);
 
