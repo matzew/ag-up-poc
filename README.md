@@ -1,6 +1,11 @@
 #Proof Of Concept: AeroGear Unified Push Server... 
 **NOTE:** THIS IS NOT YET READY, it's just evaluating some ideas
 
+** Java7 and mongodb required **
+
+For starting... run ```mvn``` (that's all)
+
+
 ### Some guidance ...
 
 #### Registration
