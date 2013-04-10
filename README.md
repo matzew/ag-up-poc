@@ -1,4 +1,7 @@
 #Proof Of Concept: AeroGear Unified Push Server... 
+
+[![Build Status](https://travis-ci.org/matzew/ag-up-poc.png)](https://travis-ci.org/matzew/ag-up-poc)
+
 **NOTE:** THIS IS NOT YET READY, it's just evaluating some ideas
 
 ** Java7 and mongodb required **
