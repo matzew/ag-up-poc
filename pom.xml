@@ -61,7 +61,7 @@
 		    <!-- was forked and modified - you need to build it... -->
 		    <groupId>org.anacoders.plugins</groupId>
 		    <artifactId>vertx-maven-plugin</artifactId>
-		    <version>1.3.0.2-SNAPSHOT</version>
+		    <version>1.3.0.1</version>
             <configuration>
                 <verticleName>org.jboss.aerogear.push.Server</verticleName>
             </configuration>
