@@ -23,6 +23,8 @@ curl -v -H "Accept: application/json"  \
 ```
 _The response returns an PUSH-APP-ID...._
 
+##### iOS App
+
 Add an ```iOS``` Mobile Application:
 ```
 curl -v -H "Accept: application/json"  \
@@ -35,6 +37,8 @@ _The response returns an MOBILE-APP-ID...._
 
 **Note**: Use a path - upload not yet supported..................
 
+##### Android App
+
 Add an ```Android``` Mobile Application:
 ```
 curl -v -H "Accept: application/json"  \
@@ -42,6 +46,19 @@ curl -v -H "Accept: application/json"  \
   -X POST  \
   -d '{"google-api-key" : "MY GOOGLE ID"}'  \
   http://localhost:8080/applications/{PushAppID}/android
+```
+_The response returns an MOBILE-APP-ID...._
+
+##### Web App
+
+Add a ```Web``` Application:
+
+```
+curl -v -H "Accept: application/json"  \
+  -H "Content-type: application/json"  \
+  -X POST    \
+  -d '{"channels":["kris","org.messaging"]}'  \
+  http://localhost:8080/applications/{PushAppID}/web
 ```
 _The response returns an MOBILE-APP-ID...._
 
