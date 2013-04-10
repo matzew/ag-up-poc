@@ -94,9 +94,9 @@
   
     <!-- NOTE: YOU NEED TO BUILD YOURSELF -->
     <dependency>
-      <groupId>de.et42</groupId>
+      <groupId>com.notnoop.apns</groupId>
       <artifactId>apns</artifactId>
-      <version>0.2.2</version>
+      <version>0.2.3</version>
     <exclusions>
         <exclusion>
             <groupId>org.codehaus.jackson</groupId>
