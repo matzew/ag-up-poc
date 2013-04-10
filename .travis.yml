@@ -2,3 +2,5 @@ language: java
 
 jdk:
   - oraclejdk7
+
+services: mongodb
