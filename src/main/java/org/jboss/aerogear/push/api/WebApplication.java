@@ -20,24 +20,19 @@ package org.jboss.aerogear.push.api;
 import java.util.List;
 
 /**
- * Represents a web/browser-based application. Unlike native (mobile) apps, there is no
- * real Push Notification. Using 'websocket' (or more robust fallbacks) is a way to get 
- * this enabled.
- * 
- * One Web Application (regardless if mobile or not), can subscribe to a list of channels,
+ * One Web Application (regardless if mobile or not), can subscribe to a list of endpoints,
  * to receive messages/notifcations.
  * 
  * While WebSocket (and others) allow sending LARGE contents, a notification here is more like
  * <i>You have mail(tm)</i>
- * 
  */
 public interface WebApplication extends MobileApplication {
     
     
     /**
-     * The list of the channels that the web application is subscribed to... 
+     * The list of the endpoints that the web application is subscribed to... 
      */
-    List<String> getChannels();
-    void addChannel(String channelName);
-    void removeChannel(String channelName);
+    List<String> getEndpoints();
+    void addEndpoint(String endpointName);
+    void removeEndpoint(String endpointName);
 }
