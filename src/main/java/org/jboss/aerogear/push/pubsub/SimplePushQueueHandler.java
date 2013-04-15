@@ -73,11 +73,14 @@ public class SimplePushQueueHandler implements Handler<Message<JsonObject>> {
         for (Object app : applications) {
           JsonObject webApp = (JsonObject) app;
           
+          // NOT USED, YET.....
+          webApp.getArray("endpoints");
+          
           // GLOBAL CHANNEL, NOW.....
           try {
               Topic topic   = (Topic)initialContext.lookup("/topic/chat");
               MessageProducer producer = session.createProducer(topic);
-              TextMessage message = session.createTextMessage("TEST");
+              TextMessage message = session.createTextMessage(payload.encode());
               producer.send(message);
           } catch (NamingException e) {
               //
