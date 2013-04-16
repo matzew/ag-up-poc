@@ -128,7 +128,7 @@
       <artifactId>vertx-core</artifactId>
       <version>${vertx.version}</version>
     </dependency>
-
+    
     <!-- JBoss HornetQ client dependencie -->
       <dependency>
          <groupId>org.jboss.spec.javax.jms</groupId>

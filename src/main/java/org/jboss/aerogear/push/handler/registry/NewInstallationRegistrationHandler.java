@@ -58,7 +58,6 @@ public final class NewInstallationRegistrationHandler implements
                 // in the POC it does not make sense to transform from JsonObject to
                 // "rich object graph" and vice versa... 
                 // At some point a more richer API ... (e.g. ORM) would be nicer......  
-                
                 newRegisteredInstallation = new JsonObject(buffer.toString());
                 
                 // generate a "device/app" ID:
@@ -69,7 +68,6 @@ public final class NewInstallationRegistrationHandler implements
             }
         });
 
-        
         JsonObject eventBusMessage = MongoPersistorMessageUtil.findMessageForIdAndCollection("pushApplication", pushApplicationID);
         eb.send("vertx.mongopersistor", eventBusMessage, new Handler<Message<JsonObject>>() {
             @Override
@@ -110,6 +108,11 @@ public final class NewInstallationRegistrationHandler implements
                         // noop.... TODO: check is save/update really really worked...................
                     }
                 });
+
+                // hack:
+                request.response.headers().put("Access-Control-Allow-Origin", "*");
+                request.response.headers().put("Access-Control-Allow-Credentials", "true");
+                request.response.headers().put("Access-Control-Allow-Headers", "Content-Type, AG-PUSH-APP, AG-Mobile-APP");
                 
                 // For now, we just render the new ID........ BUT.... we could do else........
                 JsonObject resp = new JsonObject().putString("ID", newRegisteredInstallation.getString("id"));

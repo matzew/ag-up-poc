@@ -22,6 +22,7 @@ import org.jboss.aerogear.push.handler.registry.NewInstallationRegistrationHandl
 import org.jboss.aerogear.push.handler.registry.PushApplicationDetailsHandler;
 import org.jboss.aerogear.push.handler.registry.PushApplicationRegistrationHandler;
 import org.jboss.aerogear.push.handler.sender.BroadcastPushMessageHandler;
+import org.jboss.aerogear.push.handler.sender.WebNotificationHandler;
 import org.jboss.aerogear.push.pubsub.APNsQueueHandler;
 import org.jboss.aerogear.push.pubsub.GCMQueueHandler;
 import org.jboss.aerogear.push.pubsub.GlobalSenderQueueHandler;
@@ -76,6 +77,20 @@ public class Server extends Verticle{
         rm.get("/applications/:pushAppId", new PushApplicationDetailsHandler(eb));
         // Register Mobile Apps:
         rm.post("/applications/:pushAppId/:variant", new MobileApplicationRegistrationHandler(eb));
+        
+        
+        rm.options("/registry/device", new Handler<HttpServerRequest>() {
+
+            @Override
+            public void handle(HttpServerRequest req) {
+                req.response.headers().put("Access-Control-Allow-Origin", "*");
+                req.response.headers().put("Access-Control-Allow-Credentials", "true");
+                req.response.headers().put("Access-Control-Allow-Headers", "Content-Type, AG-PUSH-APP, AG-Mobile-APP");
+                
+                req.response.end();
+            }
+        });
+        
         // register token from the user/device
         rm.post("/registry/device", new NewInstallationRegistrationHandler(eb));
 
@@ -84,8 +99,8 @@ public class Server extends Verticle{
 
         // Broadcast messages
         rm.post("/sender/broadcast/:pushAppId", new BroadcastPushMessageHandler(eb));
-
-
+        // Web Notifications: (client IDs, are in the payload)
+        rm.post("/sender/web", new WebNotificationHandler());
 
         // ================= POOR MAN's WebServer    =================  
         // static files:

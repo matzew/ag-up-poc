@@ -29,13 +29,13 @@ import javax.jms.Topic;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.hornetq.api.jms.HornetQJMSClient;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
 public class SimplePushQueueHandler implements Handler<Message<JsonObject>> {
-    
     private Connection connection = null;
     private InitialContext initialContext = null;
     private Session session = null;
@@ -69,21 +69,22 @@ public class SimplePushQueueHandler implements Handler<Message<JsonObject>> {
     public void handle(Message<JsonObject> event) {
         JsonObject payload    = event.body.getObject("payload");
         JsonArray applications = event.body.getArray("applications");
-
+        
         for (Object app : applications) {
           JsonObject webApp = (JsonObject) app;
           
           // NOT USED, YET.....
           webApp.getArray("endpoints");
           
-          // GLOBAL CHANNEL, NOW.....
           try {
-              Topic topic   = (Topic)initialContext.lookup("/topic/chat");
+              Topic topic   = HornetQJMSClient.createTopic("aerogear.broadcast");
               MessageProducer producer = session.createProducer(topic);
               TextMessage message = session.createTextMessage(payload.encode());
+
+              // stomp headers:
+              message.setStringProperty("endpoint", "broadcast");
+              
               producer.send(message);
-          } catch (NamingException e) {
-              //
           } catch (JMSException jmse) {
               jmse.printStackTrace();
           }
