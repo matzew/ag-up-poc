@@ -101,7 +101,7 @@ Client-side example for how to register an installation:
 _No real client SDK, YET!!!!_
 
 
-#### Sender
+### Sender
 
 Send broadcast push message to ALL mobile apps of a certain Push APP......:
 
@@ -112,6 +112,27 @@ curl -v -H "Accept: application/json"  \
   -d '{"key":"blah", "alert":"Test...."}'  \
   http://localhost:8080/sender/broadcast/{PushAppID}
 ```
+
+#### Web Notification
+
+Send a notification to a number of connected clients: 
+
+```
+curl -v -H "Accept: application/json"   \
+  -H "Content-type: application/json"
+  -X POST   \
+  -d '{
+     "clients" : ["1728170794"],  
+     "payload":[
+        {"mail": "You haz mail"},
+        {"foo": "You haz foo"}
+      ]
+     }'
+
+http://localhost:8080/sender/web
+```
+
+The ```clients``` Array takes the IDs of the connected 'session'
 
 
 ## More details
