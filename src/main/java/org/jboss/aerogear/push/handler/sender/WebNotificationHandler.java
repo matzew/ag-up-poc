@@ -90,8 +90,6 @@ public class WebNotificationHandler implements Handler<HttpServerRequest> {
                     
                     JsonArray payload = pushMessage.getArray("payload");
                     
-                    Topic topic   = HornetQJMSClient.createTopic("aerogear." + clientID);
-                    
                     for (Object payloadObjects : payload) {
                         JsonObject jsonObj = (JsonObject) payloadObjects;
                         
@@ -99,11 +97,10 @@ public class WebNotificationHandler implements Handler<HttpServerRequest> {
                         
                         for (String endpoint : endpointnames) {
                             try {
+                                Topic topic   = HornetQJMSClient.createTopic("aerogear." + clientID + "." + endpoint);
                                 MessageProducer producer = session.createProducer(topic);
                                 TextMessage message = session.createTextMessage(jsonObj.getString(endpoint));
 
-                                // stomp headers:
-                                message.setStringProperty("endpoint", endpoint);
                                 producer.send(message);
                             } catch (JMSException jmse) {
                                 jmse.printStackTrace();
